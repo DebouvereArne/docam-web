@@ -2,6 +2,7 @@
 # Imports
 # ------------------------
 
+import os
 import sys
 import bluetooth
 import pygame                           # Afspelen audio via bluetooth-speaker
@@ -95,11 +96,18 @@ def take_picture():
         GPIO.output(led, GPIO.LOW)
         cameraSettings()
         camera.start_preview()
-        time.sleep(2)                                                           # Scherpstellen van de camera
+        time.sleep(2)               # Scherpstellen van de camera
         camera.capture('/home/pi/Pictures/' + filename + '.jpg')
         print("Foto genomen")
+        filesize = os.path.getsize('/home/pi/Pictures/' + filename + '.jpg')
+        DB_layer = DbClass()
+        if (aangebeld == True):
+            DB_layer.addMedia(filename + '.jpg', filesize, True)
+        else:
+            DB_layer.addMedia(filename + '.jpg', filesize, False)
         time.sleep(30)
         motion_detected = False
+        aangebeld = False
 
 def record_video():
     statusSensor = GPIO.input(pir)

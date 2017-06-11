@@ -25,17 +25,17 @@ class DbClass:
         self.__cursor.close()
         return result
 
-    def getDataFromDatabaseMetVoorwaarde(self, voorwaarde):
-        sqlQuery = "SELECT * FROM tablename WHERE columnname = '{param1}'"
-        sqlCommand = sqlQuery.format(param1=voorwaarde)
-
-        self.__cursor.execute(sqlCommand)
-        result = self.__cursor.fetchall()
-        self.__cursor.close()
-        return result
+    # def getDataFromDatabaseMetVoorwaarde(self, voorwaarde):
+    #     sqlQuery = "SELECT * FROM tablename WHERE columnname = '{param1}'"
+    #     sqlCommand = sqlQuery.format(param1=voorwaarde)
+    #
+    #     self.__cursor.execute(sqlCommand)
+    #     result = self.__cursor.fetchall()
+    #     self.__cursor.close()
+    #     return result
 
     def addMedia(self, value1, value2, value3):
-        sqlQuery = "INSERT INTO media (filename, date, filesize, doorbell) VALUES ('{param1}',now(),'{param2}','{param3}')"
+        sqlQuery = "INSERT INTO media (filename, date, filesize, doorbell) VALUES ('{param1}',now(),{param2},{param3})"
         sqlCommand = sqlQuery.format(param1=value1, param2=value2, param3=value3)
 
         self.__cursor.execute(sqlCommand)
