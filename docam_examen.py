@@ -9,6 +9,18 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/timeline')
+def timeline():
+    return render_template('timeline.html')
+
+@app.route('/sound-inside')
+def soundinside():
+    return render_template('sound-inside.html')
+
+@app.route('/sound-outside')
+def soundoutside():
+    return render_template('sound-outside.html')
+
 @app.errorhandler(404)
 def pagenotfound(error):
     return render_template("error/404.html", error=error)

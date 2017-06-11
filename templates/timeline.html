@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Timeline
+{% endblock %}
+
+{% block timeline %}
+    class="current"
+{% endblock %}
+
+{% block body %}
+    <h1>Responsive Table </h1>
+    <table>
+        {% for medium in media %}
+        <tr>
+            <td></td>
+            <td class="shapes"><img src="{{ url_for("static",filename="img/circle.png") }}" class="circle"
+                                    alt="circle"/></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Lorem ipsum</td>
+            <td class="shapes"><img src="{{ url_for("static",filename="img/line.png") }}" class="line" alt="line"/></td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

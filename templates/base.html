@@ -1,0 +1,47 @@
+{% import "macros/macro.html" as macro %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Doorbell with photo/video compatibility and customizable sound">
+    <meta name="author" content="Arne Debouvere">
+    <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+    <title>
+        Docam - {% block title %}{% endblock %}
+    </title>
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/styles.css") }}">
+</head>
+<body>
+<header>
+    <a href="{{ url_for("index") }}" id="logo"></a>
+    <nav>
+        <ul>
+            <li><a {% block home %}{% endblock %} href="{{ url_for("index") }}">Home</a></li>
+            <li><a {% block timeline %}{% endblock %} href="{{ url_for("timeline") }}">Timeline</a></li>
+            <li class="dropdown">
+                Sound
+                <div class="dropdown-content"><a {% block sound_inside %}{% endblock %}
+                        href="{{ url_for("soundinside") }}">Inside</a>
+                    <a {% block sound_outside %}{% endblock %} href="{{ url_for("soundoutside") }}">Outside</a>
+                </div>
+
+            </li>
+            <li><a href="#">User</a></li>
+        </ul>
+    </nav>
+</header>
+{% block body %}
+{% endblock %}
+<footer class="footer-distributed">
+			<div class="footer-right">
+				<a href="#"><i></i></a>
+				<a href="#"><i></i></a>
+				<a href="#"><i></i></a>
+				<a href="#"><i></i></a>
+			</div>
+			<div class="footer-left">
+				<p>Debouvere Arne &copy; 2017</p>
+			</div>
+	</footer>
+</body>
+</html>
