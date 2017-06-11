@@ -3,28 +3,30 @@ class DbClass:
         import mysql.connector as connector
 
         self.__dsn = {
-            "host": "HostnameHere",
-            "user": "UserNameHere",
-            "passwd": "PasswdHere",
-            "db": "DBNameHere"
+            "host": "169.254.10.1",
+            "user": "root",
+            "passwd": "badmin",
+            "db": "docam"
         }
-
         self.__connection = connector.connect(**self.__dsn)
         self.__cursor = self.__connection.cursor()
 
-    def getDataFromDatabase(self):
-        # Query zonder parameters
-        sqlQuery = "SELECT * FROM tablename"
+    def getMediaFromDatabase(self):
+        sqlQuery = "SELECT * FROM media"
+        self.__cursor.execute(sqlQuery)
+        result = self.__cursor.fetchall()
+        self.__cursor.close()
+        return result
 
+    def getRingtonesFromDatabase(self):
+        sqlQuery = "SELECT * FROM ringtones"
         self.__cursor.execute(sqlQuery)
         result = self.__cursor.fetchall()
         self.__cursor.close()
         return result
 
     def getDataFromDatabaseMetVoorwaarde(self, voorwaarde):
-        # Query met parameters
         sqlQuery = "SELECT * FROM tablename WHERE columnname = '{param1}'"
-        # Combineren van de query en parameter
         sqlCommand = sqlQuery.format(param1=voorwaarde)
 
         self.__cursor.execute(sqlCommand)
@@ -32,11 +34,17 @@ class DbClass:
         self.__cursor.close()
         return result
 
-    def setDataToDatabase(self, value1):
-        # Query met parameters
-        sqlQuery = "INSERT INTO tablename (columnname) VALUES ('{param1}')"
-        # Combineren van de query en parameter
-        sqlCommand = sqlQuery.format(param1=value1)
+    def addMedia(self, value1, value2, value3):
+        sqlQuery = "INSERT INTO media (filename, date, filesize, doorbell) VALUES ('{param1}',now(),'{param2}','{param3}')"
+        sqlCommand = sqlQuery.format(param1=value1, param2=value2, param3=value3)
+
+        self.__cursor.execute(sqlCommand)
+        self.__connection.commit()
+        self.__cursor.close()
+
+    def addRingtone(self, value1, value2):
+        sqlQuery = "INSERT INTO ringtones (name, filename, creation_date) VALUES ('{param1}','{param2}',now())"
+        sqlCommand = sqlQuery.format(param1=value1, param2=value2)
 
         self.__cursor.execute(sqlCommand)
         self.__connection.commit()
