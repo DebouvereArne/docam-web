@@ -67,18 +67,21 @@ class PIRCamera():
     def setRingtone(self, ringtone_name):
         self.__ringtone_name = ringtone_name
 
-    def takePicture(self):
-        statusSensor = GPIO.input(self.__pir)
-        if statusSensor == 0:
+    def setVideoDuration(self, video_duration):
+        self.__video_duration = video_duration
+
+    def takePicture(self, default_width, default_height, resolution):
+        status_sensor = GPIO.input(self.__pir)
+        if status_sensor == 0:
             GPIO.output(self.__led, GPIO.LOW)
-        elif statusSensor == 1:
+        elif status_sensor == 1:
             self.__motion_detected = True
             filename = "image-" + str(datetime.now().strftime("%d-%m-%Y_%H.%M.%S"))
             print("Infrarood gedetecteerd, foto aan het nemen, even geduld")
             GPIO.output(self.__led, GPIO.HIGH)
             time.sleep(0.5)
             GPIO.output(self.__led, GPIO.LOW)
-            self.cameraSettings(1280,720,60,60)
+            self.cameraSettings(default_width, default_height, resolution)
             PIRCamera.camera.start_preview()
             time.sleep(2)
             PIRCamera.camera.capture('/home/pi/Pictures/' + filename + '.jpg')
@@ -95,10 +98,10 @@ class PIRCamera():
             self.__aangebeld = False
 
     def recordVideo(self, default_width, default_height, brightness, framerate):
-        statusSensor = GPIO.input(self.__pir)
-        if statusSensor == 0:
+        status_sensor = GPIO.input(self.__pir)
+        if status_sensor == 0:
             GPIO.output(self.__led, GPIO.LOW)
-        elif statusSensor == 1:
+        elif status_sensor == 1:
             filename = "video-" + str(datetime.now().strftime("%d-%m-%Y_%H.%M.%S"))
             print("Infrarood gedetecteerd, video aan het opnemen, even geduld")
             self.__motion_detected = True

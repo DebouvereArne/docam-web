@@ -117,6 +117,7 @@ def record_video():
     if statusSensor == 0:
         GPIO.output(led, GPIO.LOW)
     elif statusSensor == 1:
+        global aangebeld
         filename = "video-" + str(datetime.now().strftime("%d-%m-%Y_%H.%M.%S"))
         print("Infrarood gedetecteerd, video aan het opnemen, even geduld")
         motion_detected = True
@@ -131,14 +132,22 @@ def record_video():
         cmd = "MP4Box -add /home/pi/Videos/" + filename + ".h264:fps=" + str(framerate) + "-new /home/pi/Videos/" + filename + ".mp4"
         call([cmd], shell=True)
         print("Video opgenomen")
+        filesize = os.path.getsize('/home/pi/Videos/' + filename + '.mp4')
+        DB_layer = DbClass()
+        if (aangebeld == True):
+            DB_layer.addMedia(filename + '.mp4', filesize, True)
+        else:
+            DB_layer.addMedia(filename + '.mp4', filesize, False)
+        call('rm /home/pi/Videos/' + filename + '.h264', shell=True)
         time.sleep(3)
+        aangebeld = False
         motion_detected = False
 
 try:
     bluetoothScan()
     while motion_sensor == True:
-        take_picture()
-        #record_video()
+        #take_picture()
+        record_video()
 
 except KeyboardInterrupt:
     GPIO.output(led, GPIO.LOW)
