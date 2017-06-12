@@ -1,3 +1,5 @@
+# Class design van programma (schakeling Docam)
+
 import bluetooth
 from datetime import datetime           # Datetime
 from DbClass import DbClass
@@ -25,16 +27,28 @@ class PIRCamera():
         self.__aangebeld = False
         self.__motion_detected = False
 
+        self.__ringtone_name = ""
+
         self.__setup()
         self.__bluetoothScan()
 
     def __setup(self):
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
-        GPIO.input(self.__pir, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        GPIO.setup(self.__pir, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(self.__knop, GPIO.IN, pull_up_down = GPIO.PUD_UP)
         GPIO.setup(self.__led, GPIO.OUT)
         GPIO.setup(self.__speaker, GPIO.OUT)
+        GPIO.add_event_detect(self.__knop, GPIO.RISING, callback=self.my_callback, bouncetime=200)
+
+    def my_callback(self, channel):
+        if (GPIO.input(self.__knop)):
+            self.__aangebeld = True
+            pygame.mixer.init()
+            pygame.mixer.music.load("/home/pi/Music/Ringtones/" + self.__ringtone_name + ".mp3")
+            pygame.mixer.music.play()
+            while pygame.mixer.music.get_busy() == True:
+                continue
 
     def __bluetoothScan(self):
         call('killall -9 pulseaudio', shell=True)
@@ -49,6 +63,9 @@ class PIRCamera():
         PIRCamera.camera.resolution = (default_width, default_height)
         PIRCamera.camera.brightness = brightness
         PIRCamera.camera.framerate = framerate
+
+    def setRingtone(self, ringtone_name):
+        self.__ringtone_name = ringtone_name
 
     def takePicture(self):
         statusSensor = GPIO.input(self.__pir)
@@ -96,13 +113,13 @@ class PIRCamera():
                 framerate) + "-new /home/pi/Videos/" + filename + ".mp4"
             call([cmd], shell=True)
             print("Video opgenomen")
-            filesize = os.path.getsize('/home/pi/Pictures/' + filename + '.mp4')
+            filesize = os.path.getsize('/home/pi/Videos/' + filename + '.mp4')
             DB_layer = DbClass()
             if (self.__aangebeld == True):
                 DB_layer.addMedia(filename + '.mp4', filesize, True)
             else:
                 DB_layer.addMedia(filename + '.mp4', filesize, False)
-            call('rm ' + filename + '.h264', shell=True)
+            call('rm /home/pi/Videos/' + filename + '.h264', shell=True)
             time.sleep(3)
             self.__motion_detected = False
 

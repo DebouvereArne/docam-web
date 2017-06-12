@@ -42,7 +42,7 @@ default_width = 1280                    # Default width
 default_height = 720                    # Default height
 brightness = 60                         # Default brightness
 video_duration = 20                     # Duur van de video in seconden
-ringtone_name = "clarinet"              # Bestandsaam van de ringtone
+ringtone_name = "clarinet"              # Bestandsnaam van de ringtone
 framerate = 60                          # Default framerate van video's
 
 # ------------------------
