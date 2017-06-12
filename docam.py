@@ -74,6 +74,7 @@ def cameraVideoSettings():
 
 def my_callback(channel):
     if (GPIO.input(knop)):
+        global aangebeld
         aangebeld = True
         pygame.mixer.init()
         pygame.mixer.music.load("/home/pi/Music/Ringtones/" + ringtone_name + ".mp3")
@@ -88,6 +89,7 @@ def take_picture():
     if statusSensor == 0:
         GPIO.output(led, GPIO.LOW)
     elif statusSensor == 1:
+        global aangebeld
         motion_detected = True
         filename = "image-" + str(datetime.now().strftime("%d-%m-%Y_%H.%M.%S"))
         print("Infrarood gedetecteerd, foto aan het nemen, even geduld")
@@ -101,11 +103,12 @@ def take_picture():
         print("Foto genomen")
         filesize = os.path.getsize('/home/pi/Pictures/' + filename + '.jpg')
         DB_layer = DbClass()
+        time.sleep(10)
         if (aangebeld == True):
             DB_layer.addMedia(filename + '.jpg', filesize, True)
         else:
             DB_layer.addMedia(filename + '.jpg', filesize, False)
-        time.sleep(30)
+        time.sleep(20)
         motion_detected = False
         aangebeld = False
 

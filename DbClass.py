@@ -3,9 +3,9 @@ class DbClass:
         import mysql.connector as connector
 
         self.__dsn = {
-            "host": "169.254.10.11",
-            "user": "root",
-            "passwd": "badmin",
+            "host": "localhost",
+            "user": "admin-localhost",
+            "passwd": "badmin-localhost",
             "db": "docam"
         }
         self.__connection = connector.connect(**self.__dsn)
