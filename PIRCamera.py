@@ -32,6 +32,8 @@ class PIRCamera():
         self.__setup()
         self.__bluetoothScan()
 
+        self.__framerate = "30"
+
     def __setup(self):
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -39,9 +41,10 @@ class PIRCamera():
         GPIO.setup(self.__knop, GPIO.IN, pull_up_down = GPIO.PUD_UP)
         GPIO.setup(self.__led, GPIO.OUT)
         GPIO.setup(self.__speaker, GPIO.OUT)
-        GPIO.add_event_detect(self.__knop, GPIO.RISING, callback=self.my_callback, bouncetime=200)
+        GPIO.add_event_detect(self.__knop, GPIO.RISING, callback=self.knop_callback, bouncetime=200)
+        GPIO.add_event_detect(self.__pir, GPIO.RISING, callback=self.pir_callback, bouncetime=200)
 
-    def my_callback(self, channel):
+    def knop_callback(self, channel):
         if (GPIO.input(self.__knop)):
             self.__aangebeld = True
             pygame.mixer.init()
@@ -49,6 +52,10 @@ class PIRCamera():
             pygame.mixer.music.play()
             while pygame.mixer.music.get_busy() == True:
                 continue
+
+    def pir_callback(self, channel):
+        if (GPIO.input(self.__pir)):
+            self.takePicture()
 
     def __bluetoothScan(self):
         call('killall -9 pulseaudio', shell=True)
@@ -59,10 +66,18 @@ class PIRCamera():
         time.sleep(2)
         call('pacmd set-default-sink bluez_sink.30_21_36_04_04_6C', shell=True)
 
+    def getStatusMotionSensor(self):
+        statusMotionSensor = GPIO.input(self.__pir)
+        if (statusMotionSensor == 0):
+            self.__motion_detected = False
+        elif (statusMotionSensor == 1):
+            self.__motion_detected = True
+
     def cameraSettings(self, default_width, default_height, brightness, framerate=30):
         PIRCamera.camera.resolution = (default_width, default_height)
         PIRCamera.camera.brightness = brightness
         PIRCamera.camera.framerate = framerate
+        self.__framerate = framerate
 
     def setRingtone(self, ringtone_name):
         self.__ringtone_name = ringtone_name
@@ -70,7 +85,7 @@ class PIRCamera():
     def setVideoDuration(self, video_duration):
         self.__video_duration = video_duration
 
-    def takePicture(self, default_width, default_height, resolution):
+    def takePicture(self):
         status_sensor = GPIO.input(self.__pir)
         if status_sensor == 0:
             GPIO.output(self.__led, GPIO.LOW)
@@ -81,7 +96,6 @@ class PIRCamera():
             GPIO.output(self.__led, GPIO.HIGH)
             time.sleep(0.5)
             GPIO.output(self.__led, GPIO.LOW)
-            self.cameraSettings(default_width, default_height, resolution)
             PIRCamera.camera.start_preview()
             time.sleep(2)
             PIRCamera.camera.capture('/home/pi/Pictures/' + filename + '.jpg')
@@ -97,7 +111,7 @@ class PIRCamera():
             self.__motion_detected = False
             self.__aangebeld = False
 
-    def recordVideo(self, default_width, default_height, brightness, framerate):
+    def recordVideo(self):
         status_sensor = GPIO.input(self.__pir)
         if status_sensor == 0:
             GPIO.output(self.__led, GPIO.LOW)
@@ -108,12 +122,11 @@ class PIRCamera():
             GPIO.output(self.__led, GPIO.HIGH)
             time.sleep(0.5)
             GPIO.output(self.__led, GPIO.LOW)
-            self.cameraSettings(default_width, default_height, brightness, framerate)
             PIRCamera.camera.start_recording('/home/pi/Videos/' + filename + '.h264')
             time.sleep(self.__video_duration)
             PIRCamera.camera.stop_recording()
             cmd = "MP4Box -add /home/pi/Videos/" + filename + ".h264:fps=" + str(
-                framerate) + "-new /home/pi/Videos/" + filename + ".mp4"
+                self.__framerate) + "-new /home/pi/Videos/" + filename + ".mp4"
             call([cmd], shell=True)
             print("Video opgenomen")
             filesize = os.path.getsize('/home/pi/Videos/' + filename + '.mp4')

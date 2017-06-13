@@ -28,9 +28,8 @@ def pagenotfound(error):
 
 if __name__ == '__main__':
     picamera = PIRCamera(20, 21, 16, 12)
+    picamera.setRingtone("clarinet")
+    picamera.cameraSettings(1280, 720, 60, 60)
     port = int(os.environ.get("PORT",8080))
     host = "0.0.0.0"
     app.run(host=host,port=port,debug=False)
-
-    while True:
-        picamera.takePicture(1280, 720, 60)
