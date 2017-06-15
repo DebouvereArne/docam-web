@@ -98,9 +98,9 @@ class PIRCamera():
             GPIO.output(self.__led, GPIO.LOW)
             PIRCamera.camera.start_preview()
             time.sleep(2)
-            PIRCamera.camera.capture('/home/pi/Pictures/' + filename + '.jpg')
+            PIRCamera.camera.capture('/home/pi/examen/datacom/Pycharm/static/img/photos/' + filename + '.jpg')
             print("Foto genomen")
-            filesize = os.path.getsize('/home/pi/Pictures/' + filename + '.jpg')
+            filesize = round(os.path.getsize('/home/pi/examen/datacom/Pycharm/static/img/photos/' + filename + '.jpg') / 1024, 1)
             DB_layer = DbClass()
             time.sleep(10)
             if (self.__aangebeld == True):
@@ -126,10 +126,10 @@ class PIRCamera():
             time.sleep(self.__video_duration)
             PIRCamera.camera.stop_recording()
             cmd = "MP4Box -add /home/pi/Videos/" + filename + ".h264:fps=" + str(
-                self.__framerate) + "-new /home/pi/Videos/" + filename + ".mp4"
+                self.__framerate) + "-new /home/pi/examen/datacom/Pycharm/static/img/videos/" + filename + ".mp4"
             call([cmd], shell=True)
             print("Video opgenomen")
-            filesize = os.path.getsize('/home/pi/Videos/' + filename + '.mp4')
+            filesize = round(os.path.getsize('/home/pi/examen/datacom/Pycharm/static/img/photos/' + filename + '.mp4') / 1024, 1)
             DB_layer = DbClass()
             if (self.__aangebeld == True):
                 DB_layer.addMedia(filename + '.mp4', filesize, True)

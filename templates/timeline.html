@@ -9,20 +9,44 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Responsive Table </h1>
+    <section>
+    <h1>Timeline</h1>
     <table>
+            <tr>
+                <td>
+
+                </td>
+                <td>
+                    Bestandsgrootte
+                </td>
+                <td>
+                    Datum
+                </td>
+                <td>
+                    Afbeelding
+                </td>
+            </tr>
         {% for medium in media %}
-        <tr>
-            <td></td>
-            <td class="shapes"><img src="{{ url_for("static",filename="img/circle.png") }}" class="circle"
-                                    alt="circle"/></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Lorem ipsum</td>
-            <td class="shapes"><img src="{{ url_for("static",filename="img/line.png") }}" class="line" alt="line"/></td>
-            <td></td>
-        </tr>
+            <tr>
+                <td class="shapes"><img src="{{ url_for("static",filename="img/circle.png") }}" class="circle"
+                                        alt="circle"/></td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td class="shapes"><img src="{{ url_for("static",filename="img/line.png") }}" class="line" alt="line"/>
+                </td>
+                <td class="medium">
+                    <img src="{{ url_for("static",filename="img/photos/" + medium[1]) }}" class="img-thumbnail"/>
+                </td>
+                <td>
+                    {{ medium[3] }} kB
+                </td>
+                <td>
+                    {{ medium[2] }}
+                </td>
+            </tr>
         {% endfor %}
     </table>
+    </section>
 {% endblock %}

@@ -12,7 +12,9 @@ def index():
 
 @app.route('/timeline')
 def timeline():
-    return render_template('timeline.html')
+    DB_layer = DbClass()
+    list_media = DB_layer.getMediaFromDatabase()
+    return render_template('timeline.html', media=list_media)
 
 @app.route('/sound-inside')
 def soundinside():
