@@ -31,6 +31,7 @@ class PIRCamera():
 
         self.__setup()
         self.__bluetoothScan()
+        self.__outdoorSound()
 
         self.__framerate = "30"
 
@@ -57,6 +58,21 @@ class PIRCamera():
         if (GPIO.input(self.__pir)):
             self.takePicture()
 
+    # -------------------------------------------------------------------
+    # Source: http://domoticx.com/raspberry-pi-buzzer-speaker-via-gpio/
+    # -------------------------------------------------------------------
+
+    def __outdoorSound(self):
+        try:
+            while self.__knop == GPIO.HIGH:
+                GPIO.output(self.__speaker, True)
+                time.sleep(.3)
+                GPIO.output(self.__speaker, False)
+                time.sleep(.5)
+
+        except KeyboardInterrupt:
+            GPIO.output(self.__speaker, False)
+
     def __bluetoothScan(self):
         call('killall -9 pulseaudio', shell=True)
         time.sleep(3)
@@ -65,13 +81,6 @@ class PIRCamera():
         call('~/scripts/autopair', shell=True)
         time.sleep(2)
         call('pacmd set-default-sink bluez_sink.30_21_36_04_04_6C', shell=True)
-
-    def getStatusMotionSensor(self):
-        statusMotionSensor = GPIO.input(self.__pir)
-        if (statusMotionSensor == 0):
-            self.__motion_detected = False
-        elif (statusMotionSensor == 1):
-            self.__motion_detected = True
 
     def cameraSettings(self, default_width, default_height, brightness, framerate=30):
         PIRCamera.camera.resolution = (default_width, default_height)
