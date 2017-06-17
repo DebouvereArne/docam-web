@@ -713,3 +713,10 @@ input[type=number] {
     border: 0.5px solid #d7dcdf;
     box-shadow: 1px;
 }
+
+.file-formats {
+    font-size: 0.8em;
+    display: block;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}

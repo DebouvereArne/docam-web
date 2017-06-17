@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import Flask, flash, redirect, render_template, request, session, abort
+from flask import Flask, flash, redirect, render_template, request, session, abort, url_for
 import os
 from DbClass import DbClass
 from PIRCamera import PIRCamera
@@ -41,13 +41,29 @@ def timeline():
 def sound():
     return render_template('sound.html')
 
+# Sources: https://www.tutorialspoint.com/flask/flask_file_uploading.htm
+#          http://flask.pocoo.org/docs/0.12/patterns/fileuploads/
 
-# Source: https://www.tutorialspoint.com/flask/flask_file_uploading.htm
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/uploader', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        f = request.files['file']
-        f.save(secure_filename(f.filename))
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            name = request.form['nameRingtone']
+            DB_layer = DbClass()
+            DB_layer.addRingtone(name, filename)
     return sound()
 
 
