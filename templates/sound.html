@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Sound
+{% endblock %}
+
+{% block sound %}
+    class="current"
+{% endblock %}
+
+{% block body %}
+    <section>
+        <h1>Sound</h1>
+        <div class="settings-panel">
+            <div class="control-group">
+                <h2>Volume</h2>
+                <form method="get">
+                    <input type="range" name="volume" class="range-slider" value="" min="0" max="100">
+
+                    <input type="submit" class="btn blue circular" value="Update">
+                </form>
+            </div>
+            <div class="control-group">
+                <h2>Ringtone</h2>
+                <label class="control control--radio" name="">Name ringtone
+                    <input type="radio" name="radio"/>
+                    <div class="control__indicator"></div>
+                </label>
+            </div>
+            <div class="control-group">
+                <h2>Add ringtone</h2>
+                <form action="/uploader" method="POST"
+                      enctype="multipart/form-data">
+                    <input type="file" name="file"/>
+                    <input type="submit" value="Submit" class="btn blue circular" />
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

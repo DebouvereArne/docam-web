@@ -86,20 +86,19 @@ header {
 
 }
 
-/* The container <div> - needed to position the dropdown content */
 .dropdown {
     color: #FFF;
     position: relative;
     display: inline-block;
 }
 
-/* Dropdown Content (Hidden by Default) */
 .dropdown-content {
+    border-radius: 3px;
     margin-top: 10px;
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 100px;
+    max-width: 80px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
@@ -107,7 +106,7 @@ header {
 /* Links inside the dropdown */
 .dropdown-content a {
     color: black;
-    padding: 12px 16px;
+    padding: 12px 8px;
     text-decoration: none;
     display: block;
 }
@@ -204,6 +203,15 @@ h1 {
 
 }
 
+h2 {
+
+    font-size: 1.5em;
+    color: #003459;
+    line-height: 1.15em;
+    margin: 15px 0;
+
+}
+
 p {
 
     line-height: 1.45em;
@@ -251,8 +259,8 @@ table tr td {
     padding: 1em 2.1em 1.1em;
     border-radius: 3px;
     margin: 8px 8px 8px 8px;
-    color: #fbdedb;
-    background-color: #fbdedb;
+    color: #FFF;
+    background-color: #00171F;
     display: inline-block;
     background: #e74c3c;
     -webkit-transition: 0.3s;
@@ -542,4 +550,166 @@ input[type=range]:focus::-ms-fill-upper {
 
 .filesize {
     margin-right: 20px;
+}
+
+/* Login */
+
+.login {
+    margin: 0px auto;
+    width: 300px;
+}
+
+.login-screen {
+    background-color: transparent;
+    padding: 0px auto;
+    border-radius: 5px
+}
+
+.app-title {
+    text-align: center;
+    color: #777;
+}
+
+.login-form {
+    text-align: center;
+}
+
+.login-field {
+    border-radius: 10px;
+    text-align: center;
+    height: 3em;
+    font-size: 1em;
+}
+
+.control-group {
+    margin-bottom: 10px;
+}
+
+.login-link {
+    font-size: 12px;
+    color: #444;
+    display: block;
+    margin-top: 12px;
+}
+
+.control-group {
+	display: inline-block;
+	margin: 10px;
+	padding: 30px;
+	text-align: left;
+	vertical-align: top;
+	background: transparent;
+}
+
+.control {
+	font-size: 18px;
+	position: relative;
+	display: block;
+	margin-bottom: 15px;
+	padding-left: 30px;
+	cursor: pointer;
+}
+
+.control input {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+}
+
+.control__indicator {
+	position: absolute;
+	top: 2px;
+	left: 0;
+	width: 20px;
+	height: 20px;
+	background: transparent;
+}
+
+.control--radio .control__indicator {
+	border-radius: 50%;
+}
+
+/* Hover and focus states */
+.control:hover input ~ .control__indicator,
+.control input:focus ~ .control__indicator {
+	background: #ccc;
+}
+
+/* Checked state */
+.control input:checked ~ .control__indicator {
+	background: #2aa1c0;
+}
+
+/* Hover state whilst checked */
+.control:hover input:not([disabled]):checked ~ .control__indicator,
+.control input:checked:focus ~ .control__indicator {
+	background: #0e647d;
+}
+
+/* Disabled state */
+.control input:disabled ~ .control__indicator {
+	pointer-events: none;
+	opacity: .6;
+	background: #e6e6e6;
+}
+
+/* Check mark */
+.control__indicator:after {
+	position: absolute;
+	display: none;
+	content: '';
+}
+
+/* Show check mark */
+.control input:checked ~ .control__indicator:after {
+	display: block;
+}
+
+/* Checkbox tick */
+.control--checkbox .control__indicator:after {
+	top: 4px;
+	left: 8px;
+	width: 3px;
+	height: 8px;
+	transform: rotate(45deg);
+	border: solid #fff;
+	border-width: 0 2px 2px 0;
+}
+
+/* Disabled tick colour */
+.control--checkbox input:disabled ~ .control__indicator:after {
+	border-color: #7b7b7b;
+}
+
+/* Radio button inner circle */
+.control--radio .control__indicator:after {
+	top: 7px;
+	left: 7px;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: #fff;
+}
+
+/* Disabled circle colour */
+.control--radio input:disabled ~ .control__indicator:after {
+	background: #7b7b7b;
+}
+
+.settings-panel {
+  display: flex;
+}
+.settings-panel > div {
+  flex: 1; /*grow*/
+}
+
+input[type=number] {
+    -webkit-appearance: none;
+    text-align: left;
+    border-radius: 20px;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: 33%;
+    border: 0.5px solid #d7dcdf;
+    box-shadow: 1px;
 }

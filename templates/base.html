@@ -13,34 +13,37 @@
 </head>
 <body>
 <header>
-    <a href="{{ url_for("index") }}" id="logo"></a>
+    <a href="{% if session['logged_in'] %}{{ url_for("index") }}{% endif %}" id="logo"></a>
     <nav>
-        <ul>
-            <li><a {% block home %}{% endblock %} href="{{ url_for("index") }}">Home</a></li>
-            <li><a {% block timeline %}{% endblock %} href="{{ url_for("timeline") }}">Timeline</a></li>
-            <li class="dropdown">
-                Sound
-                <div class="dropdown-content"><a {% block sound_inside %}{% endblock %}
-                        href="{{ url_for("soundinside") }}">Inside</a>
-                    <a {% block sound_outside %}{% endblock %} href="{{ url_for("soundoutside") }}">Outside</a>
-                </div>
-            </li>
-            <li><a href="#">User</a></li>
-        </ul>
+        {% if session['logged_in'] %}
+            <ul>
+                <li><a {% block home %}{% endblock %} href="{{ url_for("index") }}">Home</a></li>
+                <li><a {% block timeline %}{% endblock %} href="{{ url_for("timeline") }}">Timeline</a></li>
+                <li><a {% block sound %}{% endblock %} href="{{ url_for("sound") }}">Sound</a></li>
+                <li class="dropdown">
+                    User
+                    <div class="dropdown-content"><a {% block settings %}{% endblock %}
+                            href="{{ url_for("settings") }}">Settings</a>
+                    </div>
+                </li>
+            </ul>
+        {% endif %}
     </nav>
 </header>
 {% block body %}
 {% endblock %}
-<footer class="footer-distributed">
-			<div class="footer-right">
-				<a href="#"><i></i></a>
-				<a href="#"><i></i></a>
-				<a href="#"><i></i></a>
-				<a href="#"><i></i></a>
-			</div>
-			<div class="footer-left">
-				<p>Debouvere Arne &copy; 2017</p>
-			</div>
-	</footer>
+{% if session['logged_in'] %}
+    <footer class="footer-distributed">
+        <div class="footer-right">
+            <a href="#"><i></i></a>
+            <a href="#"><i></i></a>
+            <a href="#"><i></i></a>
+            <a href="#"><i></i></a>
+        </div>
+        <div class="footer-left">
+            <p>Debouvere Arne &copy; 2017</p>
+        </div>
+    </footer>
+{% endif %}
 </body>
 </html>

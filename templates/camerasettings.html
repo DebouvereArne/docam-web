@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Settings
+{% endblock %}
+
+{% block settings %}
+    class="current"
+{% endblock %}
+
+{% block body %}
+    <section>
+        <h1>Camera settings panel</h1>
+        <div class="settings-panel">
+            <div class="control-group">
+                <h2>Camera mode</h2>
+                <label class="control control--radio" name="image-mode">Image
+                    <input type="radio" name="radio"/>
+                    <div class="control__indicator"></div>
+                </label>
+                <label class="control control--radio" name="video-mode">Video
+                    <input type="radio" name="radio"/>
+                    <div class="control__indicator"></div>
+                </label>
+            </div>
+        </div>
+        <div class="settings-panel">
+            <div class="control-group">
+                <h2>Resolution</h2>
+                <label class="control control--radio" name="480p">480p
+                    <input type="radio" name="radio"/>
+                    <div class="control__indicator"></div>
+                </label>
+                <label class="control control--radio" name="720p">720p
+                    <input type="radio" name="radio"/>
+                    <div class="control__indicator"></div>
+                </label>
+                <label class="control control--radio" name="1080p">1080p
+                    <input type="radio" name="radio"/>
+                    <div class="control__indicator"></div>
+                </label>
+            </div>
+            <div class="control-group">
+                <h2>Framerate</h2>
+                <label class="control control--radio" name="30fps">30 fps
+                    <input type="radio" name="radio"/>
+                    <div class="control__indicator"></div>
+                </label>
+                <label class="control control--radio" name="60fps">60 fps
+                    <input type="radio" name="radio"/>
+                    <div class="control__indicator"></div>
+                </label>
+            </div>
+            <div class="control-group">
+                <h2>Brightness</h2>
+                <form>
+                    <input type="range" name="brightness" class="range-slider" min="0" max="100"
+                           oninput="this.form.amountBrightness.value=this.value">
+                    <input type="number" name="amountBrightness" min="0" max="100" value=""
+                           oninput="this.form.brightness.value=this.value"/>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}
