@@ -1,9 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>404</title>
-</head>
-<body>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+    404
+{% endblock %}
+
+{% block body %}
+    <section>
+        404 error: ga terug naar <a href="{{ url_for("index") }}">index</a>
+    </section>
+{% endblock %}

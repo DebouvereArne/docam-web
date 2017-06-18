@@ -33,6 +33,12 @@ class PIRCamera():
         self.__bluetoothScan()
         self.__outdoorSound()
 
+        self.__image_mode = True
+        self.__video_mode = False
+
+        self.__default_width = "1280"
+        self.__default_height = "720"
+        self.__brightness = "60"
         self.__framerate = "30"
 
     def __setup(self):
@@ -56,7 +62,20 @@ class PIRCamera():
 
     def pir_callback(self, channel):
         if (GPIO.input(self.__pir)):
-            self.takePicture()
+            if (self.__image_mode == True and self.__video_mode == False):
+                self.takePicture()
+            elif (self.__image_mode == False and self.__video_mode == True):
+                self.recordVideo()
+
+    def setImageMode(self):
+        self.__image_mode == True
+        time.sleep(0.001)
+        self.__video_mode == False
+
+    def setVideoMode(self):
+        self.__image_mode == False
+        time.sleep(0.001)
+        self.__video_mode == True
 
     # -------------------------------------------------------------------
     # Source: http://domoticx.com/raspberry-pi-buzzer-speaker-via-gpio/
@@ -84,7 +103,10 @@ class PIRCamera():
 
     def cameraSettings(self, default_width, default_height, brightness, framerate=30):
         PIRCamera.camera.resolution = (default_width, default_height)
+        self.__default_width = default_width
+        self.__default_height == default_height
         PIRCamera.camera.brightness = brightness
+        self.__brightness = brightness
         PIRCamera.camera.framerate = framerate
         self.__framerate = framerate
 
@@ -93,6 +115,10 @@ class PIRCamera():
 
     def setVideoDuration(self, video_duration):
         self.__video_duration = video_duration
+
+    def setBrightness(self, brightness):
+        PIRCamera.camera.brightness = brightness
+        self.__brightness = brightness
 
     def takePicture(self):
         status_sensor = GPIO.input(self.__pir)
@@ -138,7 +164,7 @@ class PIRCamera():
                 self.__framerate) + "-new /home/pi/examen/datacom/Pycharm/static/img/videos/" + filename + ".mp4"
             call([cmd], shell=True)
             print("Video opgenomen")
-            filesize = round(os.path.getsize('/home/pi/examen/datacom/Pycharm/static/img/photos/' + filename + '.mp4') / 1024, 1)
+            filesize = round(os.path.getsize('/home/pi/examen/datacom/Pycharm/static/img/videos/' + filename + '.mp4') / 1024, 1)
             DB_layer = DbClass()
             if (self.__aangebeld == True):
                 DB_layer.addMedia(filename + '.mp4', filesize, True)

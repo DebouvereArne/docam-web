@@ -11,6 +11,7 @@ ALLOWED_EXTENSIONS = set(['wav', 'mp3'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+picamera = PIRCamera(20, 21, 16, 12)
 
 @app.route('/')
 def index():
@@ -30,6 +31,16 @@ def do_admin_login():
     return index()
 
 
+@app.route('/mode', methods=['GET','POST'])
+def set_mode():
+    option = request.form['options-mode']
+    print(option)
+    # if option == 'image-mode':
+    #     picamera.setImageMode()
+    # elif option == 'video-mode':
+    #     picamera.setVideoMode()
+    return settings()
+
 @app.route('/timeline')
 def timeline():
     DB_layer = DbClass()
@@ -39,7 +50,10 @@ def timeline():
 
 @app.route('/sound')
 def sound():
-    return render_template('sound.html')
+    DB_layer = DbClass()
+    list_ringtones = DB_layer.getRingtonesFromDatabase()
+    return render_template('sound.html', ringtones=list_ringtones)
+
 
 # Sources: https://www.tutorialspoint.com/flask/flask_file_uploading.htm
 #          http://flask.pocoo.org/docs/0.12/patterns/fileuploads/
@@ -47,6 +61,7 @@ def sound():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.route('/uploader', methods=['GET', 'POST'])
 def upload_file():
@@ -72,15 +87,18 @@ def settings():
     return render_template('camerasettings.html')
 
 
+@app.route('/brightness', methods=['GET', 'POST'])
+def set_brightness():
+    if request.method == 'POST':
+        brightness = request.form['amountBrightness']
+        picamera.setBrightness(int(brightness))
+    return settings()
+
 @app.errorhandler(404)
 def pagenotfound(error):
     return render_template("error/404.html", error=error)
 
-
 if __name__ == '__main__':
-    picamera = PIRCamera(20, 21, 16, 12)
-    picamera.setRingtone("clarinet")
-    picamera.cameraSettings(1280, 720, 60, 60)
     port = int(os.environ.get("PORT", 8080))
     host = "0.0.0.0"
     app.secret_key = os.urandom(12)

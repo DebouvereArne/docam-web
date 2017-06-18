@@ -14,14 +14,16 @@
         <div class="settings-panel">
             <div class="control-group">
                 <h2>Camera mode</h2>
-                <label class="control control--radio" name="image-mode">Image
-                    <input type="radio" name="radio"/>
-                    <div class="control__indicator"></div>
-                </label>
-                <label class="control control--radio" name="video-mode">Video
-                    <input type="radio" name="radio"/>
-                    <div class="control__indicator"></div>
-                </label>
+                <form name="camera-mode" action="/mode" method="post">
+                    <label class="control control--radio" name="options-mode" value="image-mode" onchange="this.form.submit();">Image
+                        <input type="radio" name="radio"/>
+                        <div class="control__indicator"></div>
+                    </label>
+                    <label class="control control--radio" name="options-mode" value="video-mode" onchange="this.form.submit();">Video
+                        <input type="radio" name="radio"/>
+                        <div class="control__indicator"></div>
+                    </label>
+                </form>
             </div>
         </div>
         <div class="settings-panel">
@@ -53,11 +55,12 @@
             </div>
             <div class="control-group">
                 <h2>Brightness</h2>
-                <form>
+                <form action="/brightness" method="post">
                     <input type="range" name="brightness" class="range-slider" min="0" max="100"
                            oninput="this.form.amountBrightness.value=this.value">
-                    <input type="number" name="amountBrightness" min="0" max="100" value=""
+                    <input type="number" class="brightness-value" name="amountBrightness" min="0" max="100" value=""
                            oninput="this.form.brightness.value=this.value"/>
+                    <input type="submit" class="btn blue circular" value="Update">
                 </form>
             </div>
         </div>
