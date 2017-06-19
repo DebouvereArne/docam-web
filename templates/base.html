@@ -34,14 +34,12 @@
 {% endblock %}
 {% if session['logged_in'] %}
     <footer class="footer-distributed">
-        <div class="footer-right">
-            <a href="#"><i></i></a>
-            <a href="#"><i></i></a>
-            <a href="#"><i></i></a>
-            <a href="#"><i></i></a>
-        </div>
         <div class="footer-left">
             <p>Debouvere Arne &copy; 2017</p>
+            <a href="{{ url_for("index") }}">Home</a><br>
+            <a href="{{ url_for("timeline") }}">Timeline</a><br>
+            <a href="{{ url_for("sound") }}">Sound</a><br>
+            <a href="{{ url_for("settings") }}">Settings</a><br>
         </div>
     </footer>
 {% endif %}

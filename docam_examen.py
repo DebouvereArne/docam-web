@@ -30,16 +30,15 @@ def do_admin_login():
         flash('Verkeerde wachtwoord.')
     return index()
 
-
-@app.route('/mode', methods=['GET','POST'])
-def set_mode():
-    option = request.form['options-mode']
-    print(option)
-    # if option == 'image-mode':
-    #     picamera.setImageMode()
-    # elif option == 'video-mode':
-    #     picamera.setVideoMode()
-    return settings()
+# @app.route('/mode', methods=['GET','POST'])
+# def set_mode():
+#     option = request.form['options-mode']
+#     print(option)
+#     if option == 'image-mode':
+#         picamera.setImageMode()
+#     elif option == 'video-mode':
+#         picamera.setVideoMode()
+#     return settings()
 
 @app.route('/timeline')
 def timeline():

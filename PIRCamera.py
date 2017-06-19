@@ -124,6 +124,15 @@ class PIRCamera():
         PIRCamera.camera.brightness = brightness
         self.__brightness = brightness
 
+    def setResolution(self, width, height):
+        PIRCamera.camera.resolution(width, height)
+        self.__default_width = width
+        self.__default_height = height
+
+    def setFramerate(self, framerate):
+        PIRCamera.camera.framerate(framerate)
+        self.__framerate = framerate
+
     def takePicture(self):
         status_sensor = GPIO.input(self.__pir)
         if status_sensor == 0:

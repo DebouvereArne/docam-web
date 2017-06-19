@@ -14,12 +14,12 @@
         <div class="settings-panel">
             <div class="control-group">
                 <h2>Camera mode</h2>
-                <form name="camera-mode" action="/mode" method="post">
-                    <label class="control control--radio" name="options-mode" value="image-mode" onchange="this.form.submit();">Image
+                <form name="camera-mode" method="post">
+                    <label class="control control--radio" name="options-mode" value="image-mode">Image
                         <input type="radio" name="radio"/>
                         <div class="control__indicator"></div>
                     </label>
-                    <label class="control control--radio" name="options-mode" value="video-mode" onchange="this.form.submit();">Video
+                    <label class="control control--radio" name="options-mode" value="video-mode">Video
                         <input type="radio" name="radio"/>
                         <div class="control__indicator"></div>
                     </label>
@@ -30,15 +30,15 @@
             <div class="control-group">
                 <h2>Resolution</h2>
                 <label class="control control--radio" name="480p">480p
-                    <input type="radio" name="radio"/>
+                    <input type="radio" name="radio" onchange="this.form.submit();" value="480p"/>
                     <div class="control__indicator"></div>
                 </label>
                 <label class="control control--radio" name="720p">720p
-                    <input type="radio" name="radio"/>
+                    <input type="radio" name="radio" value="720p" />
                     <div class="control__indicator"></div>
                 </label>
                 <label class="control control--radio" name="1080p">1080p
-                    <input type="radio" name="radio"/>
+                    <input type="radio" name="radio" value="1080p" />
                     <div class="control__indicator"></div>
                 </label>
             </div>
