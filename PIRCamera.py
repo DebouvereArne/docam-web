@@ -27,11 +27,13 @@ class PIRCamera():
         self.__aangebeld = False
         self.__motion_detected = False
 
-        self.__ringtone_name = ""
+        self.__ringtone_filename = ""
+
+        self.__frequency = 540
+        self.__volume = 100
 
         self.__setup()
         self.__bluetoothScan()
-        self.__outdoorSound()
 
         self.__image_mode = True
         self.__video_mode = False
@@ -48,14 +50,23 @@ class PIRCamera():
         GPIO.setup(self.__knop, GPIO.IN, pull_up_down = GPIO.PUD_UP)
         GPIO.setup(self.__led, GPIO.OUT)
         GPIO.setup(self.__speaker, GPIO.OUT)
+        global Buzz
+        Buzz = GPIO.PWM(self.__speaker, self.__frequency)
+        Buzz.start(0)
         GPIO.add_event_detect(self.__knop, GPIO.RISING, callback=self.knop_callback, bouncetime=200)
         GPIO.add_event_detect(self.__pir, GPIO.RISING, callback=self.pir_callback, bouncetime=200)
 
     def knop_callback(self, channel):
         if (GPIO.input(self.__knop)):
+            print(GPIO.input(self.__knop))
             self.__aangebeld = True
+            Buzz.start(50)
+            time.sleep(1)
+            Buzz.start(0)
+            Buzz.stop()
+            time.sleep(0.2)
             pygame.mixer.init()
-            pygame.mixer.music.load("/home/pi/Music/Ringtones/" + self.__ringtone_name + ".mp3")
+            pygame.mixer.music.load("/home/pi/examen/datacom/Pycharm/static/ringtones/" + self.__ringtone_filename)
             pygame.mixer.music.play()
             while pygame.mixer.music.get_busy() == True:
                 continue
@@ -81,24 +92,13 @@ class PIRCamera():
     # Source: http://domoticx.com/raspberry-pi-buzzer-speaker-via-gpio/
     # -------------------------------------------------------------------
 
-    def __outdoorSound(self):
-        try:
-            while self.__knop == GPIO.HIGH:
-                GPIO.output(self.__speaker, True)
-                time.sleep(.3)
-                GPIO.output(self.__speaker, False)
-                time.sleep(.5)
-
-        except KeyboardInterrupt:
-            GPIO.output(self.__speaker, False)
-
     def __bluetoothScan(self):
         call('killall -9 pulseaudio', shell=True)
         time.sleep(3)
         call('pulseaudio --start', shell=True)
         time.sleep(2)
         call('~/scripts/autopair', shell=True)
-        time.sleep(2)
+        time.sleep(4)
         call('pacmd set-default-sink bluez_sink.30_21_36_04_04_6C', shell=True)
 
     def cameraSettings(self, default_width, default_height, brightness, framerate=30):
@@ -111,7 +111,11 @@ class PIRCamera():
         self.__framerate = framerate
 
     def setRingtone(self, ringtone_name):
-        self.__ringtone_name = ringtone_name
+        self.__ringtone_filename = ringtone_name
+
+    def setVolume(self, volume):
+        volumeSpeaker = volume
+        call("amixer set Master -- " + str(volumeSpeaker) + "%", shell=True)
 
     def setVideoDuration(self, video_duration):
         self.__video_duration = video_duration

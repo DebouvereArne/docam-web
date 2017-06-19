@@ -14,9 +14,10 @@
         <div class="settings-panel">
             <div class="control-group">
                 <h2>Volume</h2>
-                <form method="get">
-                    <input type="range" name="volume" class="range-slider" value="" min="0" max="100">
-
+                <form action="/volume" method="post">
+                    <input type="range" name="volume" class="range-slider" value="" min="0" max="100" oninput="this.form.amountVolume.value=this.value">
+                    <input type="number" class="volume-value" name="amountVolume" min="0" max="100" value=""
+                           oninput="this.form.volume.value=this.value"/>
                     <input type="submit" class="btn blue circular" value="Update">
                 </form>
             </div>

@@ -12,6 +12,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 picamera = PIRCamera(20, 21, 16, 12)
+picamera.setRingtone("ding.mp3")
 
 @app.route('/')
 def index():
@@ -19,7 +20,6 @@ def index():
         return render_template('login.html')
     else:
         return render_template('index.html')
-
 
 # Source: https://pythonspot.com/en/login-authentication-with-flask/
 @app.route('/login', methods=['POST'])
@@ -93,6 +93,14 @@ def set_brightness():
         brightness = request.form['amountBrightness']
         picamera.setBrightness(int(brightness))
     return settings()
+
+@app.route('/volume', methods=['GET', 'POST'])
+def set_volume():
+    if request.method == 'POST':
+        volume = request.form['amountVolume']
+        print(volume)
+        picamera.setVolume(int(volume))
+    return sound()
 
 @app.errorhandler(404)
 def pagenotfound(error):

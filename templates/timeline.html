@@ -41,7 +41,9 @@
                                             alt="line"/>
                     </td>
                     <td class="medium">
+                        <a href="{{ url_for("static",filename="img/photos/" + medium[1]) }}" download="">
                         <img src="{{ url_for("static",filename="img/photos/" + medium[1]) }}" class="img-thumbnail"/>
+                        </a>
                     </td>
                     <td>
                         {{ medium[3] }} kB
